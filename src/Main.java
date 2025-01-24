@@ -1,10 +1,11 @@
 import Classes.Client;
+import Classes.Doctor;
 import Classes.Person;
 
 public class Main {
     public static void main(String[] args)
     {
-        Person client = new Client("Erkhan" , "Piriyev" , 1 , 21 , 9 , 30);
-        System.out.println(client.toString());
+        Person doctor = new Doctor("Name" , "Surname" , true , true ,true ,true,true,true);
+        System.out.println(doctor.toString());
     }
 }
