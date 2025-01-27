@@ -10,6 +10,7 @@ public class Main {
         ArrayList<Doctor> doctors = new ArrayList<>();
         ArrayList<Client> clients = new ArrayList<>();
 
+        ShowAllPerson(doctors , clients);
     }
 
     private static void ShowAllPerson(ArrayList<Doctor> doctors, ArrayList<Client> clients)
