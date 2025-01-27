@@ -10,35 +10,10 @@ public class Main {
         ArrayList<Doctor> doctors = new ArrayList<>();
         ArrayList<Client> clients = new ArrayList<>();
 
-        Doctor doctor = new Doctor("Erkhan" , "Piriyev");
-        doctor.addWorkday("Monday");
-        doctor.addWorkday("Tuesday");
-        doctor.addWorkday("Wednesday");
-        doctor.addWorkday("Friday");
+    }
 
-        doctors.add(doctor);
-
-        doctor = new Doctor("Cheto" , "Tam");
-        doctor.addWorkday("Monday");
-        doctor.addWorkday("Wednesday");
-        doctor.addWorkday("Thursday");
-        doctor.addWorkday("Saturday");
-
-        doctors.add(doctor);
-
-        Client client = new Client("Zhanklod" , "Mamdral");
-        client.setDoctor(doctor);
-        client.setDay("Monday");
-
-        clients.add(client);
-
-        client = new Client("Ktoto" , "Tam");
-        client.setDoctor(doctor);
-        client.setDay("Saturday");
-
-        clients.add(client);
-
-
+    private static void ShowAllPerson(ArrayList<Doctor> doctors, ArrayList<Client> clients)
+    {
         int i = 1;
         System.out.println("Doctors");
         for(Doctor d : doctors)

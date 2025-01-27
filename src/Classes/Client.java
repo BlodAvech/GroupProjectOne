@@ -3,8 +3,8 @@ package Classes;
 public class Client extends Person
 {
     private Doctor doctor;
-    private String day;
-    private int hours;
+    private DayOfWeek day;
+    private SessionTime time;
 
     public Client()
     {
@@ -24,12 +24,20 @@ public class Client extends Person
         this.doctor = doctor;
     }
 
-    public String getDay() {
+    public void addDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    public DayOfWeek getDay() {
         return day;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void addTime(SessionTime time) {
+        this.time = time;
+    }
+
+    public SessionTime getTime() {
+        return time;
     }
 
     @Override

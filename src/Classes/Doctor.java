@@ -1,14 +1,15 @@
 package Classes;
-
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Doctor extends Person
 {
-    private ArrayList<String> workdays = new ArrayList<>();
+    private Set<DayOfWeek> workingDays = new HashSet<>();
+    private Set<SessionTime> sessionTimes = new HashSet<>();
 
     public Doctor()
     {
-        super();
+
     }
 
     public Doctor(String name , String surname)
@@ -16,10 +17,26 @@ public class Doctor extends Person
         super(name , surname);
     }
 
+    public void addWorkingDay(DayOfWeek day) {
+        workingDays.add(day);
+    }
+
+    public void removeWorkingDay(DayOfWeek day) {
+        workingDays.remove(day);
+    }
+
+    public boolean isWorkingOn(DayOfWeek day) {
+        return workingDays.contains(day);
+    }
+
+    public Set<DayOfWeek> getWorkingDays() {
+        return workingDays;
+    }
+
     @Override
     public String toString() {
         String workDaysList = "   Work Days:";
-        for(String day : workdays)
+        for(DayOfWeek day : workingDays)
         {
             workDaysList += (day+",");
         }
@@ -29,16 +46,5 @@ public class Doctor extends Person
                 super.toString() + workDaysList;
     }
 
-    public ArrayList<String> getWorkdays() {return  workdays;}
-
-    public void  addWorkday(String day)
-    {
-        workdays.add(day);
-    }
-
-    public void  removeWorkday(String day)
-    {
-        workdays.remove(day);
-    }
 
 }

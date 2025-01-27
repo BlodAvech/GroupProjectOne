@@ -5,6 +5,14 @@ public abstract class Person
     private String name;
     private String surname;
 
+    public enum DayOfWeek {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    }
+
+    public enum SessionTime {
+        Nine_AM , Ten_AM , Eleven_AM , Twelve_AM , One_PM , Two_PM , Three_PM , Four_PM , Five_PM , Six_PM
+    }
+
     public Person()
     {
 
