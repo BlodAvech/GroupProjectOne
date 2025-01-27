@@ -21,8 +21,10 @@ public class Doctor extends Person
         String workDaysList = "   Work Days:";
         for(String day : workdays)
         {
-            workDaysList += (day+";");
+            workDaysList += (day+",");
         }
+        workDaysList = workDaysList.substring(0 , workDaysList.length()-1);
+        workDaysList+=".";
         return
                 super.toString() + workDaysList;
     }
