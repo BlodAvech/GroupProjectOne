@@ -1,5 +1,6 @@
 package Classes;
 
+import java.time.DayOfWeek;
 import java.util.*;
 
 public class Doctor extends Person {
@@ -64,4 +65,5 @@ public class Doctor extends Person {
         }
         return scheduleString.toString();
     }
+
 }

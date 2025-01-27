@@ -1,34 +1,22 @@
-import Classes.Client;
 import Classes.Doctor;
 import Classes.Person;
-
-import java.util.ArrayList;
+import Classes.Person.DayOfWeek;
+import Classes.Person.SessionTime;
 
 public class Main {
-    public static void main(String[] args)
-    {
-        ArrayList<Doctor> doctors = new ArrayList<>();
-        ArrayList<Client> clients = new ArrayList<>();
+    public static void main(String[] args) {
+        Doctor doctor = new Doctor("Jane", "Doe");
 
-        ShowAllPerson(doctors , clients);
-    }
+        doctor.restrictDay(DayOfWeek.MONDAY);
 
-    private static void ShowAllPerson(ArrayList<Doctor> doctors, ArrayList<Client> clients)
-    {
-        int i = 1;
-        System.out.println("Doctors");
-        for(Doctor d : doctors)
-        {
-            System.out.println(i+". " +d.toString());
-            i++;
+        try {
+            doctor.addSession(DayOfWeek.MONDAY, SessionTime.NINE_AM);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-        i=1;
-        System.out.println("\n");
-        System.out.println("Clients");
-        for(Client c : clients)
-        {
-            System.out.println(i+". " +c.toString());
-            i++;
-        }
+        doctor.addSession(DayOfWeek.WEDNESDAY, SessionTime.TEN_AM);
+        doctor.addSession(DayOfWeek.FRIDAY, SessionTime.ELEVEN_AM);
+
+        System.out.println(doctor);
     }
 }
