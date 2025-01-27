@@ -54,9 +54,9 @@ public class Doctor extends Person {
 
     @Override
     public String toString() {
-        StringBuilder scheduleString = new StringBuilder(super.toString() + "\nSchedule:\n");
+        StringBuilder scheduleString = new StringBuilder(super.toString() + "   Schedule:\n");
         for (Map.Entry<DayOfWeek, Set<SessionTime>> entry : schedule.entrySet()) {
-            scheduleString.append(entry.getKey()).append(": ");
+            scheduleString.append("      " + entry.getKey()).append(": ");
             for (SessionTime session : entry.getValue()) {
                 scheduleString.append(session).append(", ");
             }

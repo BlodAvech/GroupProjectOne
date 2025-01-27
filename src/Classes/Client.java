@@ -24,7 +24,7 @@ public class Client extends Person
         this.doctor = doctor;
     }
 
-    public void addDay(DayOfWeek day) {
+    public void setDay(DayOfWeek day) {
         this.day = day;
     }
 
@@ -32,7 +32,7 @@ public class Client extends Person
         return day;
     }
 
-    public void addTime(SessionTime time) {
+    public void setTime(SessionTime time) {
         this.time = time;
     }
 
@@ -42,6 +42,6 @@ public class Client extends Person
 
     @Override
     public String toString() {
-        return super.toString() + "   Doctor:" + doctor.getFullName() + "\n   Day:" + day ;
+        return super.toString() + "   Doctor:" + doctor.getFullName() + "\n   Day:" + day  + "\n   Time:" + time;
     }
 }
