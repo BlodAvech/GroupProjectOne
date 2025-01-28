@@ -15,7 +15,7 @@ public class Main {
         while (true) {
             System.out.println("1. Manage Doctor\n2. Manage Patient\n3. Exit");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
