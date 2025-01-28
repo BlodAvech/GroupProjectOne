@@ -1,30 +1,47 @@
 package Classes;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public class Client extends Person
 {
-    private LocalDateTime time;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
-    private String dateTime;
+    private Doctor doctor;
+    private DayOfWeek day;
+    private SessionTime time;
 
     public Client()
     {
         super();
     }
 
-    public  Client(String name , String surname , int month , int day , int hour , int minute )
+    public Client(String name , String surname)
     {
-        super(name , surname);
-        this.time = LocalDateTime.of(LocalDateTime.now().getYear() , month , day , hour , minute);
-        dateTime = time.format(formatter);
+        super(name, surname);
     }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    public DayOfWeek getDay() {
+        return day;
+    }
+
+    public void setTime(SessionTime time) {
+        this.time = time;
+    }
+
+    public SessionTime getTime() {
+        return time;
+    }
 
     @Override
     public String toString() {
-        return super.toString() + dateTime;
+        return super.toString() + "   Doctor:" + doctor.getFullName() + "\n   Day:" + day  + "\n   Time:" + time;
     }
 }
