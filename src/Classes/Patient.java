@@ -1,17 +1,17 @@
 package Classes;
 
-public class Client extends Person
+public class Patient extends Person
 {
     private Doctor doctor;
     private DayOfWeek day;
     private SessionTime time;
 
-    public Client()
+    public Patient()
     {
         super();
     }
 
-    public Client(String name , String surname)
+    public Patient(String name , String surname)
     {
         super(name, surname);
     }

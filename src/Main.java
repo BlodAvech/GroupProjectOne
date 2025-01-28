@@ -1,12 +1,12 @@
 import java.util.*;
 import Classes.Doctor;
-import Classes.Client;
+import Classes.Patient;
 import Classes.Person.DayOfWeek;
 import Classes.Person.SessionTime;
 
 public class Main {
     private static List<Doctor> doctors = new ArrayList<>();
-    private static List<Client> clients = new ArrayList<>();
+    private static List<Patient> patients = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeDoctors();
@@ -74,13 +74,13 @@ public class Main {
         System.out.println("Enter patient last name:");
         String lastName = scanner.nextLine();
 
-        Client client = new Client(firstName, lastName);
-        clients.add(client);
+        Patient patient = new Patient(firstName, lastName);
+        patients.add(patient);
 
         Doctor doctor = selectDoctor(scanner);
         if (doctor == null) return;
 
-        client.setDoctor(doctor);
+        patient.setDoctor(doctor);
 
         System.out.println("Enter day for the appointment (e.g., MONDAY):");
         String dayInput = scanner.nextLine().toUpperCase();
@@ -113,11 +113,11 @@ public class Main {
             }
 
             doctor.addSession(day, selectedTime);
-            client.setDay(day);
-            client.setTime(selectedTime);
+            patient.setDay(day);
+            patient.setTime(selectedTime);
 
             System.out.println("Appointment booked successfully:");
-            System.out.println(client);
+            System.out.println(patient);
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid day.");
         }
