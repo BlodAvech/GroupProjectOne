@@ -6,6 +6,7 @@ import models.Patient;
 import repositories.interfaces.IPatientRepository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientRepository implements IPatientRepository {
@@ -24,9 +25,9 @@ public class PatientRepository implements IPatientRepository {
 
             st.setString(1 , patient.getName());
             st.setString(2 , patient.getSurname());
-            st.setString(3 , patient.getDoctor().getFullName());
-            st.setString(4 , patient.getDay().toString());
-            st.setString(5 , patient.getTime().toString());
+            st.setString(3 , patient.getDoctor());
+            st.setString(4 , patient.getDay());
+            st.setString(5 , patient.getTime());
 
             st.execute();
 
@@ -66,6 +67,27 @@ public class PatientRepository implements IPatientRepository {
 
     @Override
     public List<Patient> getAllUsers() {
-        return List;
+        Connection connection = null;
+        try{
+            connection = db.getConnection();
+            String sql ="SELECT id, name, surname, gender FROM users";
+            Statement st = connection.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            List<Patient> patients = new ArrayList<>();
+            while(rs.next()){
+                Patient patient = new Patient(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getString("doctor"),
+                        rs.getString("day"),
+                        rs.getString("time"));
+                patients.add(patient);
+            }
+            return patients;
+        }catch (SQLException e){
+            System.out.println("sql error:" + e.getMessage());
+        }
+        return null;
     }
 }

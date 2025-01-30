@@ -10,6 +10,8 @@ public class Main {
     public static void main(String[] args) {
         IDB db = new PostgresDB("jdbc:postgresql://localhost:5432", "postgres", "150207", "postgres");
 
+        private final IPatientController patientController;
+
         db.close();
     }
 }
