@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface IDoctorRepository {
     boolean createDoctor(Doctor doctor);
-    Doctor getDoctorByID(int id);
+    Doctor getDoctorById(int id);
     List<Doctor> getAllDoctors();
-
-    boolean createDoctor(Doctor doctor);
 }

@@ -29,7 +29,7 @@ public class DoctorController implements IDoctorController {
         List<Doctor> doctors = repo.getAllDoctors();
         StringBuilder responce = new StringBuilder();
         for (Doctor doctor : doctors) {
-            responce.append(doctor  .toString()).append("\n");
+            responce.append(doctor.toString()).append("\n");
         }
         return responce.toString();
     }

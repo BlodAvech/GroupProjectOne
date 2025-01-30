@@ -7,6 +7,7 @@ import repositories.interfaces.IDoctorRepository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DoctorRepository implements IDoctorRepository {
     private final IDB db;
@@ -20,34 +21,29 @@ public class DoctorRepository implements IDoctorRepository {
         Connection connection = null;
         try{
             connection = db.getConnection();
-            String sql = "Insert into Doctors(name, surname, workingDays) VALUES (?, ?, ?)";
+            String sql = "Insert into doctors(name, surname, workdays) VALUES (?, ?, ?)";
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setString(1, Doctor.getName());
-            st.setString(2, Doctor.getSurname());
-            st.setBoolean(3, Doctor.getworkingDays());
+            st.setString(1, doctor.getName());
+            st.setString(2, doctor.getSurname());
+
+            boolean[] workdays = doctor.getWorkdays();
+            Object[] workdaysObj = new Object[workdays.length];
+            for(int i = 0 ; i < workdaysObj.length ; i++) {workdaysObj[i] = workdays[i];}
+
+            st.setArray(3 , connection.createArrayOf("boolean" , workdaysObj));
 
             st.execute();
 
             return true;
-        }(catch (SQLException e){
+        }catch (SQLException e){
             System.out.println("sql error:" + e.getMessage());
         }
         return false;
     }
 
     @Override
-    public Doctor getDoctorByID(int id) {
-        return null;
-    }
-
-    @Override
-    public List<Doctor> getAllDoctors() {
-        return List.of();
-    }
-
-    @Override
-    public Doctor getDoctorById(Int id) {
+    public Doctor getDoctorById(int id) {
         Connection connection = null;
         try {
             connection = db.getConnection();
@@ -57,10 +53,14 @@ public class DoctorRepository implements IDoctorRepository {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return new Doctors(rs.getInt("id"),
+                Array sqlArray = rs.getArray("workdays");
+                Object[] workdaysAsObjects = (Object[]) sqlArray.getArray();
+                boolean[] workdays = new boolean[workdaysAsObjects.length];
+                for (int i = 0; i < workdaysAsObjects.length; i++) {workdays[i] = (Boolean) workdaysAsObjects[i];}
+                return new Doctor(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getBoolean("workingDays"));
+                        workdays);
             }
         } catch (SQLException e) {
             System.out.println("sql error:" + e.getMessage());
@@ -73,16 +73,20 @@ public class DoctorRepository implements IDoctorRepository {
         Connection connection = null;
         try{
             connection = db.getConnection();
-            String sql = "SELECT id, name, surname, workingDays FROM Doctors";
+            String sql = "SELECT id, name, surname, workdays FROM doctors";
             Statement st = connection.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
             List<Doctor> doctors = new ArrayList<>();
             while (rs.next()){
+                Array sqlArray = rs.getArray("workdays");
+                Object[] workdaysAsObjects = (Object[]) sqlArray.getArray();
+                boolean[] workdays = new boolean[workdaysAsObjects.length];
+                for (int i = 0; i < workdaysAsObjects.length; i++) {workdays[i] = (Boolean) workdaysAsObjects[i];}
                 Doctor doctor = new Doctor(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getBoolean("workingDays"));
+                        workdays);
                 doctors.add(doctor);
             }
             return doctors;

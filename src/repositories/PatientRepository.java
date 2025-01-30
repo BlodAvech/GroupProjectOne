@@ -70,7 +70,7 @@ public class PatientRepository implements IPatientRepository {
         Connection connection = null;
         try{
             connection = db.getConnection();
-            String sql ="SELECT id, name, surname, gender FROM users";
+            String sql ="SELECT * FROM patients";
             Statement st = connection.createStatement();
 
             ResultSet rs = st.executeQuery(sql);

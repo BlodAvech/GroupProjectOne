@@ -4,7 +4,9 @@ import controllers.DoctorController;
 import controllers.PatientController;
 import data.PostgresDB;
 import data.interfaceces.IDB;
+import repositories.DoctorRepository;
 import repositories.PatientRepository;
+import repositories.interfaces.IDoctorRepository;
 import repositories.interfaces.IPatientRepository;
 //import repositories.interfaces.IUserRepository;
 
@@ -14,9 +16,10 @@ public class Main {
 
         IPatientRepository pRepo = new PatientRepository(db);
         IPatientController pController = new PatientController(pRepo);
+        IDoctorRepository dRepo = new DoctorRepository(db);
+        IDoctorController dController = new DoctorController(dRepo);
 
-        pController.createPatient("Erkhan" , "Piriyev" , "Akerke" , "Monday" , "9:00");
-
+        System.out.println(dController.getAllDoctors());
         db.close();
     }
 }
