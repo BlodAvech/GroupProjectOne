@@ -23,10 +23,10 @@ public class MyApplication {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Patient Registration");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(400, 400);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2));
+        panel.setLayout(new GridLayout(8, 2));
 
         JLabel nameLabel = new JLabel("First Name:");
         JTextField nameField = new JTextField();
@@ -39,6 +39,18 @@ public class MyApplication {
             doctorBox.addItem(doctor.getFullName());
         }
 
+        JLabel dayLabel = new JLabel("Select Day:");
+        JComboBox<String> dayBox = new JComboBox<>();
+        for (Person.DayOfWeek day : Person.DayOfWeek.values()) {
+            dayBox.addItem(day.toString());
+        }
+
+        JLabel timeLabel = new JLabel("Select Time:");
+        JComboBox<String> timeBox = new JComboBox<>();
+        for (Person.SessionTime time : Person.SessionTime.values()) {
+            timeBox.addItem(time.toString());
+        }
+
         JButton submitButton = new JButton("Register");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -46,7 +58,9 @@ public class MyApplication {
                 String name = nameField.getText();
                 String surname = surnameField.getText();
                 String doctorName = (String) doctorBox.getSelectedItem();
-                savePatient(name, surname, doctorName);
+                String selectedDay = (String) dayBox.getSelectedItem();
+                String selectedTime = (String) timeBox.getSelectedItem();
+                savePatient(name, surname, doctorName, selectedDay, selectedTime);
             }
         });
 
@@ -56,6 +70,10 @@ public class MyApplication {
         panel.add(surnameField);
         panel.add(doctorLabel);
         panel.add(doctorBox);
+        panel.add(dayLabel);
+        panel.add(dayBox);
+        panel.add(timeLabel);
+        panel.add(timeBox);
         panel.add(new JLabel());
         panel.add(submitButton);
 
@@ -63,9 +81,9 @@ public class MyApplication {
         frame.setVisible(true);
     }
 
-    private static void savePatient(String name, String surname, String doctorName) {
+    private static void savePatient(String name, String surname, String doctorName, String day, String time) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("patients.txt", true))) {
-            writer.write(name + " " + surname + " - Doctor: " + doctorName);
+            writer.write(name + " " + surname + " - Doctor: " + doctorName + " - Day: " + day + " - Time: " + time);
             writer.newLine();
             JOptionPane.showMessageDialog(null, "Patient registered successfully!");
         } catch (IOException e) {
