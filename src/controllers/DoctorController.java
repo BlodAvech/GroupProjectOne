@@ -16,7 +16,7 @@ public class DoctorController implements IDoctorController {
     public String createDoctor(String name, String surname, boolean[] workdays) {
         Doctor doctor = new Doctor(name, surname, workdays);
         boolean created = repo.createDoctor(doctor);
-        return (created) ?
+        return (created) ? "success" : "error";
     }
     @Override
     public String getDoctorById(int id) {
