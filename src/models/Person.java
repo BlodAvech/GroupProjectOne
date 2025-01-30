@@ -1,7 +1,8 @@
-package Classes;
+package models;
 
 public abstract class Person
 {
+    private int id;
     private String name;
     private String surname;
 
@@ -39,9 +40,14 @@ public abstract class Person
 
     public Person(String name , String surname)
     {
-        this();
         this.name = name;
         this.surname = surname;
+    }
+
+    public Person(int id , String name , String surname)
+    {
+        this(name , surname);
+        this.id = id;
     }
 
     public String getName() {
@@ -61,6 +67,10 @@ public abstract class Person
     }
 
     public String getFullName() {return name + " " + surname;}
+
+    public int getId() {return id;}
+    public void setId(int id)  {this.id = id;}
+
     @Override
     public String toString() {
         return  name + " " + surname + "\n";

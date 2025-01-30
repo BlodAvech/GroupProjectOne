@@ -1,6 +1,5 @@
-package Classes;
+package models;
 
-import java.time.DayOfWeek;
 import java.util.*;
 
 public class Doctor extends Person {

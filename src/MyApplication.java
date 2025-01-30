@@ -1,4 +1,4 @@
-package Classes;
+import models.Doctor;
 
 import javax.swing.*;
 import java.awt.*;
