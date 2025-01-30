@@ -66,7 +66,7 @@ public class PatientRepository implements IPatientRepository {
     }
 
     @Override
-    public List<Patient> getAllUsers() {
+    public List<Patient> getAllPatients() {
         Connection connection = null;
         try{
             connection = db.getConnection();
