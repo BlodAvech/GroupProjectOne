@@ -47,7 +47,7 @@ public class DoctorRepository implements IDoctorRepository {
         Connection connection = null;
         try {
             connection = db.getConnection();
-            String sql = "Select * from Doctor WHERE id = ?";
+            String sql = "Select * from doctors WHERE id = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
 

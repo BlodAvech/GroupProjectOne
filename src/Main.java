@@ -19,7 +19,8 @@ public class Main {
         IDoctorRepository dRepo = new DoctorRepository(db);
         IDoctorController dController = new DoctorController(dRepo);
 
-        System.out.println(dController.getAllDoctors());
+        MyApplication app = new MyApplication(pController , dController);
+        app.Start();
         db.close();
     }
 }
