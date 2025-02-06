@@ -1,7 +1,11 @@
 package controllers.interfaces;
 
+import models.Patient;
+
+import java.util.List;
+
 public interface IPatientController {
-    String createPatient(String name , String surname , String doctor , String day , String time);
+    String createPatient(String name , String surname, String day , String time);
     String getPatientById(int id);
-    String getAllPatients();
+    List<Patient> getAllPatients();
 }

@@ -4,6 +4,7 @@ import controllers.DoctorController;
 import controllers.PatientController;
 import data.PostgresDB;
 import data.interfaceces.IDB;
+import models.Doctor;
 import repositories.DoctorRepository;
 import repositories.PatientRepository;
 import repositories.interfaces.IDoctorRepository;

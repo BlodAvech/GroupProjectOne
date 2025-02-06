@@ -14,8 +14,8 @@ public class PatientController implements IPatientController {
     }
 
     @Override
-    public String createPatient(String name, String surname, String doctor, String day, String time) {
-        Patient patient = new Patient(name, surname, doctor, day, time);
+    public String createPatient(String name, String surname, String day, String time) {
+        Patient patient = new Patient(name, surname, day, time);
         boolean created = repo.createPatient(patient);
         return (created) ? "User was created" : "User creation was failed";
     }
@@ -27,13 +27,9 @@ public class PatientController implements IPatientController {
     }
 
 
-        @Override
-        public String getAllPatients() {
-            List<Patient> patients = repo.getAllPatients();
-            StringBuilder responce = new StringBuilder();
-            for (Patient patient : patients) {
-                responce.append(patient.toString()).append("\n");
-            }
-            return responce.toString();
-        }
+    @Override
+    public List<Patient> getAllPatients() {
+        List<Patient> patients = repo.getAllPatients();
+        return patients;
     }
+}

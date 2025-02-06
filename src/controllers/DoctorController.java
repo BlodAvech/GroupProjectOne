@@ -25,12 +25,8 @@ public class DoctorController implements IDoctorController {
     }
 
     @Override
-    public String getAllDoctors() {
+    public List<Doctor> getAllDoctors() {
         List<Doctor> doctors = repo.getAllDoctors();
-        StringBuilder responce = new StringBuilder();
-        for (Doctor doctor : doctors) {
-            responce.append(doctor.toString()).append("\n");
-        }
-        return responce.toString();
+        return doctors;
     }
 }

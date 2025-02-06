@@ -1,8 +1,9 @@
 package models;
 
 public class Order {
-    private Patient patient;
-    private  Doctor doctor ;
+    private int id;
+    private int patientId;
+    private int doctorId ;
     private String weekday;
     private String time;
 
@@ -10,43 +11,22 @@ public class Order {
     {
     }
 
-    public Order(Patient patient ,Doctor doctor , String weekday ,  String time)
+    public Order(int patientId ,int doctorId , String weekday ,  String time)
     {
-        this.patient = patient;
-        this.doctor = doctor;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
         this.weekday = weekday;
         this.time = time;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public String getWeekday() {
-        return weekday;
-    }
-
-    public void setWeekday(String weekday) {
+    public Order(int id, int patientId ,int doctorId , String weekday ,  String time)
+    {
+        this.id = id;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
         this.weekday = weekday;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
         this.time = time;
     }
+
+
 }

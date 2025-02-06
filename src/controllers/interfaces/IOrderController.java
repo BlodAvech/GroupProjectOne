@@ -1,10 +1,13 @@
 package controllers.interfaces;
 
 import models.Doctor;
+import models.Order;
 import models.Patient;
 
+import java.util.List;
+
 public interface IOrderController {
-    String createOrder(Patient patient, Doctor doctor, String weekDay, String time);
-    String getOrderById(int id);
-    String getAllOrders();
+    void createOrder();
+    Order getOrderById(int id);
+    List<Order> getAllOrders();
 }
