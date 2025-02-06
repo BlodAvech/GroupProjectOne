@@ -1,186 +1,207 @@
-import controllers.interfaces.IDoctorController;
-import controllers.interfaces.IPatientController;
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MyApplication {
-    private static final Scanner scanner = new Scanner(System.in);
-    private final IDoctorController doctorController;
-    private final IPatientController patientController;
+    private static HashMap<String, Doctor> doctors = new HashMap<>();
 
-    private static final String[] DAYS_OF_WEEK = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    private static final String[] TIME_SLOTS = {
-            "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00",
-            "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00"
-    };
+    public static void main(String[] args) {
+        // Создаем начальных докторов
+        initializeDoctors();
 
-    public MyApplication(IPatientController patientController, IDoctorController doctorController) {
-        this.doctorController = doctorController;
-        this.patientController = patientController;
+        // Главное окно
+        JFrame frame = new JFrame("Clinic Application");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 200);
+        frame.setLayout(new GridLayout(2, 1));
+
+        JButton patientButton = new JButton("I'm a Patient");
+        JButton doctorButton = new JButton("I'm a Doctor");
+
+        patientButton.addActionListener(e -> openPatientUI());
+        doctorButton.addActionListener(e -> openDoctorUI());
+
+        frame.add(patientButton);
+        frame.add(doctorButton);
+        frame.setVisible(true);
     }
 
-    public void Start() {
-        while (true) {
-            System.out.println("\nВыберите действие:");
-            System.out.println("1. Добавить врача");
-            System.out.println("2. Найти врача по ID");
-            System.out.println("3. Показать всех врачей");
-            System.out.println("4. Добавить пациента");
-            System.out.println("5. Найти пациента по ID");
-            System.out.println("6. Показать всех пациентов");
-            System.out.println("0. Выйти");
+    private static void initializeDoctors() {
+        doctors.put("Dr. Smith", new Doctor("Dr. Smith"));
+        doctors.put("Dr. Johnson", new Doctor("Dr. Johnson"));
+        doctors.put("Dr. Brown", new Doctor("Dr. Brown"));
+    }
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+    private static void openPatientUI() {
+        JFrame frame = new JFrame("Patient Panel");
+        frame.setSize(500, 300);
+        frame.setLayout(new GridLayout(5, 2));
 
-            switch (choice) {
-                case 1:
-                    createDoctor();
-                    break;
-                case 2:
-                    getDoctorById();
-                    break;
-                case 3:
-                    getAllDoctors();
-                    break;
-                case 4:
-                    createPatient();
-                    break;
-                case 5:
-                    getPatientById();
-                    break;
-                case 6:
-                    getAllPatients();
-                    break;
-                case 0:
-                    System.out.println("Выход из программы...");
-                    return;
-                default:
-                    System.out.println("Неверный выбор, попробуйте снова.");
+        JLabel doctorLabel = new JLabel("Choose Doctor:");
+        JComboBox<String> doctorList = new JComboBox<>(doctors.keySet().toArray(new String[0]));
+
+        JLabel dayLabel = new JLabel("Choose Day:");
+        JComboBox<String> dayList = new JComboBox<>(new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
+
+        JLabel timeLabel = new JLabel("Choose Time:");
+        JTextField timeField = new JTextField();
+
+        JButton submitButton = new JButton("Book Appointment");
+        JLabel statusLabel = new JLabel("");
+
+        submitButton.addActionListener(e -> {
+            String selectedDoctor = (String) doctorList.getSelectedItem();
+            String selectedDay = (String) dayList.getSelectedItem();
+            String time = timeField.getText();
+
+            if (selectedDoctor != null && !time.isEmpty()) {
+                Doctor doctor = doctors.get(selectedDoctor);
+                boolean success = doctor.addAppointment(selectedDay, time);
+                if (success) {
+                    statusLabel.setText("Appointment booked successfully!");
+                } else {
+                    statusLabel.setText("This time slot is not available.");
+                }
+            } else {
+                statusLabel.setText("Please fill all fields.");
             }
-        }
+        });
+
+        frame.add(doctorLabel);
+        frame.add(doctorList);
+        frame.add(dayLabel);
+        frame.add(dayList);
+        frame.add(timeLabel);
+        frame.add(timeField);
+        frame.add(submitButton);
+        frame.add(statusLabel);
+
+        frame.setVisible(true);
     }
 
-    private void createDoctor() {
-        System.out.println("Введите имя врача:");
-        String name = scanner.nextLine();
-        System.out.println("Введите фамилию врача:");
-        String surname = scanner.nextLine();
+    private static void openDoctorUI() {
+        JFrame frame = new JFrame("Doctor Panel");
+        frame.setSize(500, 300);
+        frame.setLayout(new GridLayout(4, 2));
 
-        boolean[] workdays = new boolean[6];
-        for (int i = 0; i < DAYS_OF_WEEK.length; i++) {
-            System.out.println("Работает в " + DAYS_OF_WEEK[i] + "? (true/false):");
-            workdays[i] = scanner.nextBoolean();
-        }
-        scanner.nextLine();
+        JLabel doctorLabel = new JLabel("Select your name:");
+        JComboBox<String> doctorList = new JComboBox<>(doctors.keySet().toArray(new String[0]));
 
-        String response = doctorController.createDoctor(name, surname, workdays);
-        System.out.println(response);
-    }
+        JButton viewAppointmentsButton = new JButton("View Appointments");
+        JButton manageDaysOffButton = new JButton("Manage Days Off");
 
-    private void getDoctorById() {
-        System.out.println("Введите ID врача:");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        String response = doctorController.getDoctorById(id);
-        System.out.println(response);
-    }
-
-    private void getAllDoctors() {
-        String response = doctorController.getAllDoctors();
-        System.out.println(response);
-    }
-
-    private void createPatient() {
-        System.out.println("Введите имя пациента:");
-        String name = scanner.nextLine();
-        System.out.println("Введите фамилию пациента:");
-        String surname = scanner.nextLine();
-
-        String doctorsString = doctorController.getAllDoctors();
-        if (doctorsString.isEmpty()) {
-            System.out.println("Нет доступных врачей. Сначала добавьте врача.");
-            return;
-        }
-
-        String[] doctorEntries = doctorsString.split("\n");
-        if (doctorEntries.length < 2) {
-            System.out.println("Нет корректных данных о врачах.");
-            return;
-        }
-
-        System.out.println("Выберите врача из списка:");
-        int index = 1;
-        for (int i = 0; i < doctorEntries.length - 1; i += 2) {
-            String doctorInfo = doctorEntries[i].replaceFirst("^\\d+\\.", "").trim(); // Убираем ID
-            String workdaysInfo = doctorEntries[i + 1].trim();
-            System.out.println(index + ". " + doctorInfo);
-            System.out.println("   " + workdaysInfo);
-            index++;
-        }
-
-        int doctorChoice;
-        while (true) {
-            System.out.print("Введите номер врача: ");
-            doctorChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (doctorChoice > 0 && doctorChoice <= index - 1) {
-                break;
+        viewAppointmentsButton.addActionListener(e -> {
+            String selectedDoctor = (String) doctorList.getSelectedItem();
+            if (selectedDoctor != null) {
+                Doctor doctor = doctors.get(selectedDoctor);
+                showAppointments(doctor);
             }
-            System.out.println("Неверный выбор, попробуйте снова.");
-        }
+        });
 
-        int chosenIndex = (doctorChoice - 1) * 2;
-        String doctorName = doctorEntries[chosenIndex].replaceFirst("^\\d+\\.", "").trim();
-
-        System.out.println("Выберите день приема:");
-        for (int i = 0; i < DAYS_OF_WEEK.length; i++) {
-            System.out.println((i + 1) + ". " + DAYS_OF_WEEK[i]);
-        }
-
-        int dayChoice;
-        while (true) {
-            System.out.print("Введите номер дня: ");
-            dayChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (dayChoice > 0 && dayChoice <= DAYS_OF_WEEK.length) {
-                break;
+        manageDaysOffButton.addActionListener(e -> {
+            String selectedDoctor = (String) doctorList.getSelectedItem();
+            if (selectedDoctor != null) {
+                Doctor doctor = doctors.get(selectedDoctor);
+                manageDaysOff(doctor);
             }
-            System.out.println("Неверный выбор, попробуйте снова.");
-        }
-        String day = DAYS_OF_WEEK[dayChoice - 1];
+        });
 
-        // Выбор времени
-        System.out.println("Выберите время приема:");
-        for (int i = 0; i < TIME_SLOTS.length; i++) {
-            System.out.println((i + 1) + ". " + TIME_SLOTS[i]);
-        }
+        frame.add(doctorLabel);
+        frame.add(doctorList);
+        frame.add(viewAppointmentsButton);
+        frame.add(manageDaysOffButton);
 
-        int timeChoice;
-        while (true) {
-            System.out.print("Введите номер времени: ");
-            timeChoice = scanner.nextInt();
-            scanner.nextLine();
-            if (timeChoice > 0 && timeChoice <= TIME_SLOTS.length) {
-                break;
-            }
-            System.out.println("Неверный выбор, попробуйте снова.");
-        }
-        String time = TIME_SLOTS[timeChoice - 1];
-
-        String response = patientController.createPatient(name, surname, doctorName, day, time);
-        System.out.println(response);
+        frame.setVisible(true);
     }
 
-    private void getPatientById() {
-        System.out.println("Введите ID пациента:");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        String response = patientController.getPatientById(id);
-        System.out.println(response);
+    private static void showAppointments(Doctor doctor) {
+        JFrame frame = new JFrame("Appointments for " + doctor.getName());
+        frame.setSize(400, 300);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea appointmentsArea = new JTextArea();
+        appointmentsArea.setEditable(false);
+
+        doctor.getAppointments().forEach((day, times) -> {
+            appointmentsArea.append(day + ":\n");
+            for (String time : times) {
+                appointmentsArea.append("  " + time + "\n");
+            }
+        });
+
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.add(new JScrollPane(appointmentsArea), BorderLayout.CENTER);
+        frame.add(closeButton, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
     }
 
-    private void getAllPatients() {
-        String response = patientController.getAllPatients();
-        System.out.println(response);
+    private static void manageDaysOff(Doctor doctor) {
+        JFrame frame = new JFrame("Days Off Management for " + doctor.getName());
+        frame.setSize(400, 300);
+        frame.setLayout(new BorderLayout());
+
+        JList<String> daysList = new JList<>(new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
+        daysList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        JButton saveButton = new JButton("Save Days Off");
+        saveButton.addActionListener(e -> {
+            List<String> selectedDays = daysList.getSelectedValuesList();
+            doctor.setDaysOff(selectedDays);
+            JOptionPane.showMessageDialog(frame, "Days off updated successfully.");
+            frame.dispose();
+        });
+
+        frame.add(new JScrollPane(daysList), BorderLayout.CENTER);
+        frame.add(saveButton, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+}
+
+// Класс Doctor
+class Doctor {
+    private String name;
+    private List<String> daysOff;
+    private HashMap<String, List<String>> appointments;
+
+    public Doctor(String name) {
+        this.name = name;
+        this.daysOff = new ArrayList<>();
+        this.appointments = new HashMap<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getDaysOff() {
+        return daysOff;
+    }
+
+    public void setDaysOff(List<String> daysOff) {
+        this.daysOff = daysOff;
+    }
+
+    public HashMap<String, List<String>> getAppointments() {
+        return appointments;
+    }
+
+    public boolean addAppointment(String day, String time) {
+        if (daysOff.contains(day)) {
+            return false; // Нельзя забронировать прием в выходной
+        }
+        appointments.putIfAbsent(day, new ArrayList<>());
+        if (appointments.get(day).contains(time)) {
+            return false; // Уже забронировано
+        }
+        appointments.get(day).add(time);
+        return true;
     }
 }
