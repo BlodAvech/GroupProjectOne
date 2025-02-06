@@ -8,4 +8,5 @@ public interface IPatientRepository {
     boolean createPatient(Patient patient);
     Patient getPatientById(int id);
     List<Patient> getAllPatients();
+
 }

@@ -18,20 +18,37 @@ public class OrderRepository implements IOrderRepository {
 
 
     @Override
-    public void createOrder() {
+    public void createOrder(int patientId, int doctorId, String weekday, String time) {
         Connection connection = null;
 
         try {
-            connection = db.getConnection();
-            String sql= "";
+            connection = db.getConnection();  // Подключение к БД
+
+            String sql = """
+            INSERT INTO orders (patientId, doctorId, weekday, time)
+            SELECT p.id, d.id, ?, ?
+            FROM patients p
+            JOIN doctors d ON p.id = ? AND d.id = ?;
+        """;
+
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(3, patientId);
+            st.setInt(4, doctorId);
+            st.setString(1, weekday);
+            st.setString(2, time);
 
-
-
+            st.close();
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing connection: " + e.getMessage());
+            }
         }
     }
+
 
     @Override
     public Order getOrderById(int id) {
@@ -81,5 +98,5 @@ public class OrderRepository implements IOrderRepository {
         }
         return null;
     }
-    }
+
 }

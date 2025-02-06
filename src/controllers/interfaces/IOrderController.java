@@ -7,7 +7,7 @@ import models.Patient;
 import java.util.List;
 
 public interface IOrderController {
-    void createOrder();
+    void createOrder(int patientId , int doctorId , String weekDay , String time);
     Order getOrderById(int id);
     List<Order> getAllOrders();
 }

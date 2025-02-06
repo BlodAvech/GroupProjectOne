@@ -1,4 +1,6 @@
+import controllers.OrderController;
 import controllers.interfaces.IDoctorController;
+import controllers.interfaces.IOrderController;
 import controllers.interfaces.IPatientController;
 import controllers.DoctorController;
 import controllers.PatientController;
@@ -6,8 +8,10 @@ import data.PostgresDB;
 import data.interfaceces.IDB;
 import models.Doctor;
 import repositories.DoctorRepository;
+import repositories.OrderRepository;
 import repositories.PatientRepository;
 import repositories.interfaces.IDoctorRepository;
+import repositories.interfaces.IOrderRepository;
 import repositories.interfaces.IPatientRepository;
 //import repositories.interfaces.IUserRepository;
 
@@ -19,8 +23,10 @@ public class Main {
         IPatientController pController = new PatientController(pRepo);
         IDoctorRepository dRepo = new DoctorRepository(db);
         IDoctorController dController = new DoctorController(dRepo);
+        IOrderRepository oRepo = new OrderRepository(db);
+        IOrderController oController = new OrderController(oRepo);
 
-        MyApplication app = new MyApplication(pController , dController);
+        MyApplication app = new MyApplication(pController , dController , oController);
         app.Start();
         db.close();
     }

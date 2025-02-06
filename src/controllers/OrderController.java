@@ -11,8 +11,8 @@ public class OrderController implements IOrderController {
     public OrderController(IOrderRepository repo) { this.repo = repo; }
 
     @Override
-    public void createOrder(){
-        repo.createOrder();
+    public void createOrder(int patientId , int doctorId , String weekDay , String time){
+        repo.createOrder(patientId , doctorId , weekDay , time);
     }
 
     @Override

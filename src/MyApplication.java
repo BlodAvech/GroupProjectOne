@@ -1,4 +1,5 @@
 import controllers.interfaces.IDoctorController;
+import controllers.interfaces.IOrderController;
 import controllers.interfaces.IPatientController;
 import models.Doctor;
 import models.Patient;
@@ -11,6 +12,7 @@ public class MyApplication {
     private static final Scanner scanner = new Scanner(System.in);
     private final IDoctorController doctorController;
     private final IPatientController patientController;
+    private final IOrderController orderController;
 
     private static final String[] DAYS_OF_WEEK = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     private static final String[] TIME_SLOTS = {
@@ -18,9 +20,10 @@ public class MyApplication {
             "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00"
     };
 
-    public MyApplication(IPatientController patientController, IDoctorController doctorController) {
+    public MyApplication(IPatientController patientController, IDoctorController doctorController , IOrderController orderController) {
         this.doctorController = doctorController;
         this.patientController = patientController;
+        this.orderController = orderController;
     }
 
     public void Start() {
