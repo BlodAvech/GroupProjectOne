@@ -1,6 +1,6 @@
 package models;
 
-public abstract class Order {
+public class Order {
     private Patient patient;
     private  Doctor doctor ;
     private String weekday;
