@@ -14,16 +14,16 @@ public class PatientController implements IPatientController {
     }
 
     @Override
-    public String createPatient(String name, String surname, String day, String time) {
-        Patient patient = new Patient(name, surname, day, time);
+    public String createPatient(String name, String surname) {
+        Patient patient = new Patient(name, surname);
         boolean created = repo.createPatient(patient);
         return (created) ? "User was created" : "User creation was failed";
     }
 
     @Override
-    public String getPatientById(int id){
-        Patient Patient = repo.getPatientById(id);
-        return (Patient == null) ? "User was not found" : Patient.toString();
+    public Patient getPatientById(int id){
+        Patient patient = repo.getPatientById(id);
+        return patient;
     }
 
 

@@ -20,13 +20,11 @@ public class PatientRepository implements IPatientRepository {
 
         try {
             connection = db.getConnection();
-            String sql= "INSERT INTO patients(name , surname, day , time) VALUES (?,?,?,?)";
+            String sql= "INSERT INTO patients(name , surname) VALUES (?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
 
             st.setString(1 , patient.getName());
             st.setString(2 , patient.getSurname());
-            st.setString(3 , patient.getDay());
-            st.setString(4 , patient.getTime());
 
             st.execute();
 
@@ -53,9 +51,7 @@ public class PatientRepository implements IPatientRepository {
             {
                 return new Patient(rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getString("day"),
-                        rs.getString("time"));
+                        rs.getString("surname"));
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
@@ -76,9 +72,7 @@ public class PatientRepository implements IPatientRepository {
             while(rs.next()){
                 Patient patient = new Patient(rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getString("day"),
-                        rs.getString("time"));
+                        rs.getString("surname"));
                 patients.add(patient);
             }
             return patients;

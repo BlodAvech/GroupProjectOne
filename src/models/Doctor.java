@@ -1,24 +1,26 @@
 package models;
 
-import java.util.*;
 
 public class Doctor extends Person {
 
+    private String doctorType;
     private boolean[] workdays = new boolean[6];
 
     public Doctor() {
     }
 
-    public Doctor(String name, String surname , boolean[] workdays)
+    public Doctor(String name, String surname , String doctorType, boolean[] workdays)
     {
         super(name, surname);
         this.workdays = workdays;
+        this.doctorType = doctorType;
     }
 
-    public Doctor(int id , String name, String surname , boolean[] workdays)
+    public Doctor(int id , String name, String surname ,  String doctorType , boolean[] workdays)
     {
         super(id , name, surname);
         this.workdays = workdays;
+        this.doctorType = doctorType;
     }
 
 
@@ -40,5 +42,13 @@ public class Doctor extends Person {
 
     public boolean[] getWorkdays() {
         return workdays;
+    }
+
+    public void setDoctorType(String doctorType) {
+        this.doctorType = doctorType;
+    }
+
+    public String getDoctorType() {
+        return doctorType;
     }
 }

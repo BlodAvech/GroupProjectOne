@@ -21,7 +21,7 @@ public class DoctorRepository implements IDoctorRepository {
         Connection connection = null;
         try{
             connection = db.getConnection();
-            String sql = "Insert into doctors(name, surname, workdays) VALUES (?, ?, ?)";
+            String sql = "Insert into doctors(name, surname, doctortype , workdays) VALUES (?, ? , ?, ?)";
             PreparedStatement st = connection.prepareStatement(sql);
 
             st.setString(1, doctor.getName());
@@ -31,7 +31,8 @@ public class DoctorRepository implements IDoctorRepository {
             Object[] workdaysObj = new Object[workdays.length];
             for(int i = 0 ; i < workdaysObj.length ; i++) {workdaysObj[i] = workdays[i];}
 
-            st.setArray(3 , connection.createArrayOf("boolean" , workdaysObj));
+            st.setString(3 , doctor.getDoctorType());
+            st.setArray(4 , connection.createArrayOf("boolean" , workdaysObj));
 
             st.execute();
 
@@ -60,6 +61,7 @@ public class DoctorRepository implements IDoctorRepository {
                 return new Doctor(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
+                        rs.getString("doctortype"),
                         workdays);
             }
         } catch (SQLException e) {
@@ -73,7 +75,7 @@ public class DoctorRepository implements IDoctorRepository {
         Connection connection = null;
         try{
             connection = db.getConnection();
-            String sql = "SELECT id, name, surname, workdays FROM doctors";
+            String sql = "SELECT id, name, surname , doctortype , workdays FROM doctors";
             Statement st = connection.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
@@ -86,6 +88,7 @@ public class DoctorRepository implements IDoctorRepository {
                 Doctor doctor = new Doctor(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
+                        rs.getString("doctortype"),
                         workdays);
                 doctors.add(doctor);
             }

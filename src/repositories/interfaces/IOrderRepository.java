@@ -5,7 +5,7 @@ import models.*;
 import java.util.List;
 
 public interface IOrderRepository {
-    void createOrder(int patientId , int doctorId , String weekDay , String time);
+    boolean createOrder(Order order);
     Order getOrderById(int id);
     List<Order> getAllOrders();
 }

@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.interfaces.IDoctorController;
 import models.Doctor;
+import models.Patient;
 import repositories.interfaces.IDoctorRepository;
 
 import java.util.List;
@@ -13,15 +14,15 @@ public class DoctorController implements IDoctorController {
         this.repo = repo;
     }
     @Override
-    public String createDoctor(String name, String surname, boolean[] workdays) {
-        Doctor doctor = new Doctor(name, surname, workdays);
+    public String createDoctor(String name, String surname ,  String doctorType, boolean[] workdays) {
+        Doctor doctor = new Doctor(name, surname,doctorType , workdays);
         boolean created = repo.createDoctor(doctor);
         return (created) ? "success" : "error";
     }
     @Override
-    public String getDoctorById(int id) {
+    public Doctor getDoctorById(int id) {
         Doctor doctor = repo.getDoctorById(id);
-        return (doctor == null) ? "User was not found" : doctor.toString();
+        return doctor;
     }
 
     @Override

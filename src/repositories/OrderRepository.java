@@ -18,26 +18,25 @@ public class OrderRepository implements IOrderRepository {
 
 
     @Override
-    public void createOrder(int patientId, int doctorId, String weekday, String time) {
+    public boolean createOrder(Order order) {
         Connection connection = null;
 
         try {
             connection = db.getConnection();  // Подключение к БД
 
             String sql = """
-            INSERT INTO orders (patientId, doctorId, weekday, time)
-            SELECT p.id, d.id, ?, ?
-            FROM patients p
-            JOIN doctors d ON p.id = ? AND d.id = ?;
-        """;
+            INSERT INTO orders (patientid, doctorid, weekday, doctortype)
+            VALUES (?, ?, ?, ?);
+            """;
 
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(3, patientId);
-            st.setInt(4, doctorId);
-            st.setString(1, weekday);
-            st.setString(2, time);
+            st.setInt(1, order.getPatientId());
+            st.setInt(2, order.getDoctorId());
+            st.setString(3, order.getWeekday());
+            st.setString(4, order.getDoctorType());
 
-            st.close();
+            st.execute();
+            return true;
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         } finally {
@@ -47,6 +46,7 @@ public class OrderRepository implements IOrderRepository {
                 System.out.println("Error closing connection: " + e.getMessage());
             }
         }
+        return false;
     }
 
 
@@ -63,10 +63,10 @@ public class OrderRepository implements IOrderRepository {
             if(rs.next())
             {
                 return new Order(rs.getInt("id"),
-                        rs.getInt("customerId"),
-                        rs.getInt("doctorId"),
-                        rs.getString("day"),
-                        rs.getString("time"));
+                        rs.getInt("patientid"),
+                        rs.getInt("doctorid"),
+                        rs.getString("weekday"),
+                        rs.getString("doctortype"));
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
@@ -86,10 +86,10 @@ public class OrderRepository implements IOrderRepository {
             List<Order> orders = new ArrayList<>();
             while(rs.next()){
                 Order order = new Order(rs.getInt("id"),
-                        rs.getInt("customerId"),
+                        rs.getInt("patientId"),
                         rs.getInt("doctorId"),
-                        rs.getString("day"),
-                        rs.getString("time"));
+                        rs.getString("weekday"),
+                        rs.getString("doctortype"));
                 orders.add(order);
             }
             return orders;
