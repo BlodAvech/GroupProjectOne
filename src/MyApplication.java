@@ -108,7 +108,10 @@ public class MyApplication {
 
     private void getAllPatients() {
         List<Patient> patients = patientController.getAllPatients();
-        patients.forEach(System.out::println);
+        for(Patient patient : patients)
+        {
+            System.out.println(patient.getId() + " " + patient.getFullName());
+        }
     }
 
     private void getOrderById() {
