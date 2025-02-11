@@ -1,3 +1,4 @@
+//SOLID
 package repositories.interfaces;
 
 import models.Patient;

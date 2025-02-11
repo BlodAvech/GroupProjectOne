@@ -1,4 +1,6 @@
+//LSP,ISP,DIP
 package repositories;
+
 
 import controllers.PatientController;
 import data.interfaceces.IDB;

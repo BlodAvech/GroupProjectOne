@@ -1,3 +1,4 @@
+//SOLID
 package models;
 
 public class Patient extends Person

@@ -1,3 +1,4 @@
+//SRP OCP LSP
 package models;
 
 public abstract class Person

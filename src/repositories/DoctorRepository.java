@@ -1,3 +1,4 @@
+//LSP,ISP,DIP
 package repositories;
 
 import data.interfaceces.IDB;
