@@ -1,7 +1,7 @@
 //SRP OCP LSP
 package models;
 
-public abstract class Person
+public class Person
 {
     private int id;
     private String name;

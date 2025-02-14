@@ -8,6 +8,7 @@ import data.PostgresDB;
 import data.interfaceces.IDB;
 import models.Doctor;
 import models.Order;
+import models.PersonFactory;
 import repositories.DoctorRepository;
 import repositories.OrderRepository;
 import repositories.PatientRepository;
@@ -26,7 +27,7 @@ public class Main {
         IOrderRepository oRepo = new OrderRepository(db);
         IOrderController oController = new OrderController(oRepo);
 
-
+        System.out.println(PersonFactory.createPerson(PersonFactory.getInstance().getPersonTypes()[3]));
 
         MyApplication app = new MyApplication(pController , dController , oController);
         app.start();
