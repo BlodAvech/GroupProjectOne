@@ -10,8 +10,10 @@ import java.util.Scanner;
 
 public class MyApplication {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final String[] SPECIALIZATIONS = {"Терапевт", "Ортопед", "Хирург", "Пародонтолог" , "Ортодонт" , "Детский стоматолог"};
+    private static final String ADMIN_PASSWORD = "123456"; // Установленный пароль администратора
+    private static final String[] SPECIALIZATIONS = {"Терапевт", "Ортопед", "Хирург", "Пародонтолог", "Ортодонт", "Детский стоматолог"};
     private static final String[] WEEK_DAYS = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
+
     private final IDoctorController doctorController;
     private final IPatientController patientController;
     private final IOrderController orderController;
@@ -24,7 +26,41 @@ public class MyApplication {
 
     public void start() {
         while (true) {
-            System.out.println("\nВыберите действие:");
+            System.out.println("\nВыберите роль:");
+            System.out.println("1. Администратор");
+            System.out.println("2. Пациент");
+            System.out.println("0. Выйти");
+
+            int roleChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (roleChoice) {
+                case 1 -> {
+                    if (validateAdminPassword()) {
+                        adminMenu();
+                    } else {
+                        System.out.println("Неверный пароль. Возврат в главное меню...");
+                    }
+                }
+                case 2 -> patientMenu();
+                case 0 -> {
+                    System.out.println("Выход из программы...");
+                    return;
+                }
+                default -> System.out.println("Неверный ввод, попробуйте снова.");
+            }
+        }
+    }
+
+    private boolean validateAdminPassword() {
+        System.out.print("Введите пароль администратора: ");
+        String inputPassword = scanner.nextLine();
+        return inputPassword.equals(ADMIN_PASSWORD);
+    }
+
+    private void adminMenu() {
+        while (true) {
+            System.out.println("\nАдмин-панель:");
             System.out.println("1. Добавить доктора");
             System.out.println("2. Найти доктора по ID");
             System.out.println("3. Показать всех докторов");
@@ -34,7 +70,7 @@ public class MyApplication {
             System.out.println("7. Создать заказ");
             System.out.println("8. Найти заказ по ID");
             System.out.println("9. Показать все заказы");
-            System.out.println("0. Выйти");
+            System.out.println("0. Вернуться в главное меню");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -49,7 +85,34 @@ public class MyApplication {
                 case 7 -> createOrder();
                 case 8 -> getOrderById();
                 case 9 -> getAllOrders();
-                case 0 -> { return; }
+                case 0 -> {
+                    System.out.println("Возврат в главное меню...");
+                    return;
+                }
+                default -> System.out.println("Неверный ввод, попробуйте снова.");
+            }
+        }
+    }
+
+    private void patientMenu() {
+        while (true) {
+            System.out.println("\nМеню пациента:");
+            System.out.println("1. Зарегистрироваться как пациент");
+            System.out.println("2. Создать заказ");
+            System.out.println("3. Найти доктора по ID");
+            System.out.println("0. Вернуться в главное меню");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> addPatient();
+                case 2 -> createOrder();
+                case 3 -> getDoctorById();
+                case 0 -> {
+                    System.out.println("Возврат в главное меню...");
+                    return;
+                }
                 default -> System.out.println("Неверный ввод, попробуйте снова.");
             }
         }
@@ -61,19 +124,17 @@ public class MyApplication {
         System.out.print("Введите фамилию доктора: ");
         String surname = scanner.nextLine();
 
-        String[] specializations = SPECIALIZATIONS;
         System.out.println("Выберите специализацию доктора:");
-        for (int i = 0; i < specializations.length; i++) {
-            System.out.println((i + 1) + ". " + specializations[i]);
+        for (int i = 0; i < SPECIALIZATIONS.length; i++) {
+            System.out.println((i + 1) + ". " + SPECIALIZATIONS[i]);
         }
         int specChoice = scanner.nextInt();
         scanner.nextLine();
-        String doctorType = specializations[specChoice - 1];
+        String doctorType = SPECIALIZATIONS[specChoice - 1];
 
         boolean[] workdays = new boolean[7];
-        String[] weekDays = WEEK_DAYS;
         for (int i = 0; i < 7; i++) {
-            System.out.print("Работает ли доктор в " + weekDays[i] + " (1 - да, 0 - нет): ");
+            System.out.print("Работает ли доктор в " + WEEK_DAYS[i] + " (1 - да, 0 - нет): ");
             workdays[i] = scanner.nextInt() == 1;
         }
         scanner.nextLine();
@@ -84,6 +145,7 @@ public class MyApplication {
     private void getDoctorById() {
         System.out.print("Введите ID доктора: ");
         int id = scanner.nextInt();
+        scanner.nextLine();
         System.out.println(doctorController.getDoctorById(id));
     }
 
@@ -103,21 +165,13 @@ public class MyApplication {
     private void getPatientById() {
         System.out.print("Введите ID пациента: ");
         int id = scanner.nextInt();
+        scanner.nextLine();
         System.out.println(patientController.getPatientById(id));
     }
 
     private void getAllPatients() {
         List<Patient> patients = patientController.getAllPatients();
-        for(Patient patient : patients)
-        {
-            System.out.println(patient.getId() + " " + patient.getFullName());
-        }
-    }
-
-    private void getOrderById() {
-        System.out.print("Введите ID заказа: ");
-        int id = scanner.nextInt();
-        System.out.println(orderController.getOrderById(id));
+        patients.forEach(patient -> System.out.println(patient.getId() + " " + patient.getFullName()));
     }
 
     private void createOrder() {
@@ -128,15 +182,13 @@ public class MyApplication {
         System.out.print("Выберите ID пациента из списка: ");
         int patientId = scanner.nextInt();
 
-        String[] specializations = SPECIALIZATIONS;
         System.out.println("Выберите специализацию доктора:");
-        for (int i = 0; i < specializations.length; i++) {
-            System.out.println((i + 1) + ". " + specializations[i]);
+        for (int i = 0; i < SPECIALIZATIONS.length; i++) {
+            System.out.println((i + 1) + ". " + SPECIALIZATIONS[i]);
         }
         int specChoice = scanner.nextInt();
-        if(specChoice == 0)return;
         scanner.nextLine();
-        String doctorType = specializations[specChoice - 1];
+        String doctorType = SPECIALIZATIONS[specChoice - 1];
 
         List<Doctor> doctors = doctorController.getAllDoctors();
         doctors.removeIf(doc -> !doc.getDoctorType().equals(doctorType));
@@ -146,34 +198,36 @@ public class MyApplication {
         System.out.print("Выберите ID доктора из списка: ");
         int doctorId = scanner.nextInt();
         scanner.nextLine();
-        if(doctorId == 0)return;
-        Doctor selectedDoctor = doctors.get(doctorId - 1);
-        boolean[] workdays = selectedDoctor.getWorkdays();
-        String[] weekDays = WEEK_DAYS;
 
+        boolean[] workdays = doctors.get(doctorId - 1).getWorkdays();
         System.out.println("Выберите день недели из доступных:");
         for (int i = 0; i < 7; i++) {
             if (workdays[i]) {
-                System.out.println((i + 1) + ". " + weekDays[i]);
+                System.out.println((i + 1) + ". " + WEEK_DAYS[i]);
             }
         }
         int dayChoice = scanner.nextInt();
         scanner.nextLine();
-        String weekDay = weekDays[dayChoice - 1];
+        String weekDay = WEEK_DAYS[dayChoice - 1];
 
-        System.out.println(orderController.createOrder(patients.get(patientId-1).getId(), doctors.get(doctorId-1).getId(), weekDay, doctorType) ? "Заказ создан" : "Ошибка создания заказа");
+        System.out.println(orderController.createOrder(patientId, doctorId, weekDay, doctorType) ? "Заказ создан" : "Ошибка создания заказа");
+    }
+
+    private void getOrderById() {
+        System.out.print("Введите ID заказа: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println(orderController.getOrderById(id));
     }
 
     private void getAllOrders() {
         List<Order> orders = orderController.getAllOrders();
-        for (Order order : orders)
-        {
-            System.out.println(order.getId()+"."
+        for (Order order : orders) {
+            System.out.println(order.getId() + ". "
                     + patientController.getPatientById(order.getPatientId()).getFullName() + " / "
                     + doctorController.getDoctorById(order.getDoctorId()).getFullName() + " / "
                     + order.getWeekday() + " / "
-                    + order.getDoctorType() + " / "
-            );
+                    + order.getDoctorType());
         }
     }
 }
