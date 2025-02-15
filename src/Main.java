@@ -27,7 +27,7 @@ public class Main {
         IOrderRepository oRepo = new OrderRepository(db);
         IOrderController oController = new OrderController(oRepo);
 
-        System.out.println(PersonFactory.createPerson(PersonFactory.getInstance().getPersonTypes()[3]));
+        //System.out.println(PersonFactory.createPerson(PersonFactory.getInstance().getPersonTypes()[0]));
 
         MyApplication app = new MyApplication(pController , dController , oController);
         app.start();

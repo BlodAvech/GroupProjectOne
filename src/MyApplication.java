@@ -5,6 +5,7 @@ import models.Doctor;
 import models.Patient;
 import models.Order;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -70,6 +71,7 @@ public class MyApplication {
             System.out.println("7. Создать заказ");
             System.out.println("8. Найти заказ по ID");
             System.out.println("9. Показать все заказы");
+            System.out.println("10. Показать пациентов по убыванию");
             System.out.println("0. Вернуться в главное меню");
 
             int choice = scanner.nextInt();
@@ -85,6 +87,7 @@ public class MyApplication {
                 case 7 -> createOrder();
                 case 8 -> getOrderById();
                 case 9 -> getAllOrders();
+                case 10 -> getPatientsAsc();
                 case 0 -> {
                     System.out.println("Возврат в главное меню...");
                     return;
@@ -229,5 +232,13 @@ public class MyApplication {
                     + order.getWeekday() + " / "
                     + order.getDoctorType());
         }
+    }
+
+    private void getPatientsAsc()
+    {
+        List<Patient> patients = patientController.getAllPatients();
+        patients.stream()
+                .sorted(Comparator.comparing(p -> p.getName())) // Используем name
+                .forEach(System.out::println);
     }
 }
